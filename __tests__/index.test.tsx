@@ -6,14 +6,13 @@
 
 import { render, screen } from '@testing-library/react'
 import React from 'react'
-import PrefecturesPopulationComposition from '../pages/index'
+import PrefecturesPopulation from '../pages/index'
 
-describe('Home', () => {
+describe('Title', () => {
   it('renders a heading', () => {
-    render(<PrefecturesPopulationComposition />)
-
+    render(<PrefecturesPopulation />)
     const heading = screen.getByRole('heading', {
-      name: /Hello World/i,
+      name: /都道府県別人口構成/i,
     })
 
     expect(heading).toBeInTheDocument()

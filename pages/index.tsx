@@ -13,6 +13,7 @@ export type GraphData = Record<string, number | undefined>
 const PrefecturesPopulation: NextPage = () => {
   const { prefectures, responseError } = usePrefectures()
   const [showPrefectures, setShowPrefectures] = useState<Map<number, boolean>>(new Map())
+  const [prefecturesColorCodes, setPrefecturesColorCodes] = useState<Map<number, string>>(new Map())
   const [isTooManyRequest, setIsTooManyRequest] = useState(false)
   const [graphDatas, setGraphDatas] = useState<GraphData[]>([])
 
@@ -28,6 +29,15 @@ const PrefecturesPopulation: NextPage = () => {
     setShowPrefectures(newShowPrefectures)
 
     if (!isShow) return
+    // ランダムなカラーコードを生成する
+    if (prefecturesColorCodes.size === 0) {
+      const prefecturesColorCodes = new Map<number, string>()
+      prefectures.forEach((_name, prefectureCode) =>
+        prefecturesColorCodes.set(prefectureCode, generateRandomColorCode())
+      )
+      setPrefecturesColorCodes(prefecturesColorCodes)
+    }
+
     const prefectureName = prefectures.get(prefectureCode)
     if (!prefectureName) return
     // 既に取得済みの場合は何もしない
@@ -57,6 +67,18 @@ const PrefecturesPopulation: NextPage = () => {
         }
         throw Error('人口構成データが取得できませんでした')
       })
+  }
+
+  /**
+   * ランダムなカラーコードを生成する
+   * @returns ex) #8ac62b
+   */
+  const generateRandomColorCode = () => {
+    let randomColorCode = '#'
+    for (let i = 0; i < 6; i++) {
+      randomColorCode += ((16 * Math.random()) | 0).toString(16)
+    }
+    return randomColorCode
   }
 
   /**
@@ -112,7 +134,11 @@ const PrefecturesPopulation: NextPage = () => {
           ※ 短時間に大量のグラフを表示しようとする(5回以上/1sec)と情報の取得が制限されるためご注意下さい
         </p>
         {prefectures && <PrefecturesCheckbox handleShowPrefecture={handleShowPrefecture} />}
-        <PrefecturesPopulationGraph graphDatas={graphDatas} showPrefectureMap={showPrefectures} />
+        <PrefecturesPopulationGraph
+          graphDatas={graphDatas}
+          showPrefectureMap={showPrefectures}
+          prefecturesColorCodes={prefecturesColorCodes}
+        />
         {isTooManyRequest && (
           <div className={styles.tooManyRequest}>
             <p>短時間に多くのグラフを表示しようとしたため情報の取得が制限されました</p>

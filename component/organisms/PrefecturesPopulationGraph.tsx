@@ -7,9 +7,14 @@ import { Prefecture } from '../../pages/api/prefectures'
 type PrefecturesPopulationGraphProps = {
   readonly graphDatas: GraphData[]
   readonly showPrefectureMap: Map<number, boolean>
+  readonly prefecturesColorCodes: Map<number, string>
 }
 
-const PrefecturesPopulationGraph = ({ graphDatas, showPrefectureMap }: PrefecturesPopulationGraphProps) => {
+const PrefecturesPopulationGraph = ({
+  graphDatas,
+  showPrefectureMap,
+  prefecturesColorCodes,
+}: PrefecturesPopulationGraphProps) => {
   const { prefectures } = usePrefectures()
 
   if (!prefectures) return <></>
@@ -46,7 +51,11 @@ const PrefecturesPopulationGraph = ({ graphDatas, showPrefectureMap }: Prefectur
           <Tooltip />
           <Legend />
           {showPrefectures.map((showPrefecture) => (
-            <Line key={showPrefecture.prefCode} dataKey={showPrefecture.prefName} stroke="#8884d8" />
+            <Line
+              key={showPrefecture.prefCode}
+              dataKey={showPrefecture.prefName}
+              stroke={prefecturesColorCodes.get(showPrefecture.prefCode)}
+            />
           ))}
         </LineChart>
       </ResponsiveContainer>

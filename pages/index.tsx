@@ -5,6 +5,7 @@ import PrefecturesCheckbox from '../component/organisms/PrefecturesCheckbox'
 import PrefecturesPopulationGraph from '../component/organisms/PrefecturesPopulationGraph'
 import { ResponseError } from '../libs/ResponseError'
 import usePrefectures from '../libs/usePrefectures'
+import { generateRandomColorCode } from '../libs/utils'
 import styles from '../styles/PrefecturesPopulation.module.css'
 import { Population } from './api/population/[prefectureCode]'
 
@@ -67,18 +68,6 @@ const PrefecturesPopulation: NextPage = () => {
         }
         throw Error('人口構成データが取得できませんでした')
       })
-  }
-
-  /**
-   * ランダムなカラーコードを生成する
-   * @returns ex) #8ac62b
-   */
-  const generateRandomColorCode = () => {
-    let randomColorCode = '#'
-    for (let i = 0; i < 6; i++) {
-      randomColorCode += ((16 * Math.random()) | 0).toString(16)
-    }
-    return randomColorCode
   }
 
   /**

@@ -8,7 +8,7 @@ import { render, screen } from '@testing-library/react'
 import React from 'react'
 import PrefecturesPopulation from '../pages/index'
 
-describe('Home', () => {
+describe('Title', () => {
   it('renders a heading', () => {
     render(<PrefecturesPopulation />)
     const heading = screen.getByRole('heading', {

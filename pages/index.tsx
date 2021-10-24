@@ -5,8 +5,9 @@ import PrefecturesCheckbox from '../component/organisms/PrefecturesCheckbox'
 import PrefecturesPopulationGraph from '../component/organisms/PrefecturesPopulationGraph'
 import { ResponseError } from '../libs/ResponseError'
 import usePrefectures from '../libs/usePrefectures'
+import { generateRandomColorCode } from '../libs/utils'
 import styles from '../styles/PrefecturesPopulation.module.css'
-import { PopulationComposition } from './api/population/[prefectureCode]'
+import { Population } from './api/population/[prefectureCode]'
 
 export type GraphData = Record<string, number | undefined>
 
@@ -44,7 +45,7 @@ const PrefecturesPopulation: NextPage = () => {
     if (graphDatas.some((graphData) => graphData[prefectureName] !== undefined)) return
 
     // 表示対象の人口構成が未取得の場合取得する
-    fetchPopulationCompositions(prefectureCode)
+    fetchPrefecturePopulation(prefectureCode)
       .then((prefecturePopulation) => {
         // 表示対象の都道府県人口構成データからグラフ用データを生成
         if (graphDatas.length === 0) {
@@ -70,27 +71,15 @@ const PrefecturesPopulation: NextPage = () => {
   }
 
   /**
-   * ランダムなカラーコードを生成する
-   * @returns ex) #8ac62b
-   */
-  const generateRandomColorCode = () => {
-    let randomColorCode = '#'
-    for (let i = 0; i < 6; i++) {
-      randomColorCode += ((16 * Math.random()) | 0).toString(16)
-    }
-    return randomColorCode
-  }
-
-  /**
    * 都道府県別人口構成取得
    * @param prefectureCode 都道府県コード
    */
-  const fetchPopulationCompositions = async (prefectureCode: number): Promise<PopulationComposition[]> => {
+  const fetchPrefecturePopulation = async (prefectureCode: number): Promise<Population[]> => {
     const res = await fetch(`/api/population/${prefectureCode}`, { method: 'GET' })
     if (!res.ok) {
       throw new ResponseError(res.status)
     }
-    return (await res.json()) as PopulationComposition[]
+    return (await res.json()) as Population[]
   }
 
   /**
@@ -102,7 +91,7 @@ const PrefecturesPopulation: NextPage = () => {
    */
   const createPrefecturesPopulationForGraph = (
     prefectures: Map<number, string>,
-    prefecturePopulation: [number, PopulationComposition[]]
+    prefecturePopulation: [number, Population[]]
   ) => {
     const graphDatas: GraphData[] = []
     prefecturePopulation[1].map((population) => {

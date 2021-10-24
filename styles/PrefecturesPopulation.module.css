@@ -1,0 +1,19 @@
+.container {
+  max-width: 56rem /* 896px */;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.title {
+  text-align: center;
+  font-size: 1.25rem /* 20px */;
+  padding-top: 1.25rem /* 20px */;
+  padding-bottom: 1.25rem /* 20px */;
+  color: rgba(55, 65, 81, 1);
+}
+
+.textBase {
+  text-align: center;
+  font-size: 1rem /* 16px */;
+  color: rgba(55, 65, 81, 1);
+}

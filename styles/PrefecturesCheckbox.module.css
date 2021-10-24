@@ -1,0 +1,15 @@
+.checkboxContainer {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-bottom: 1.25rem /* 20px */;
+}
+
+.prefectureWidth {
+  width: 7rem /* 112px */;
+}
+
+.prefectureLabel {
+  padding-left: 0.5rem /* 8px */;
+  color: rgba(55, 65, 81, 1);
+}
